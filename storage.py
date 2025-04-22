@@ -1,18 +1,15 @@
 import pulumi
 from pulumi_azure_native import storage
+from typing import Optional, TypedDict
 
-class StorageArgs:
-    def __init__(
-            self,
-            resource_group_name: pulumi.Output[str]
-    ):
-        self.resource_group_name = resource_group_name
+class StorageArgs(TypedDict):
+    resource_group_name: pulumi.Output[str]
 
 class Storage(pulumi.ComponentResource):
     storage_account_primary_key: pulumi.Output[str]
     blob_container_name: pulumi.Output[str]
     storage_account_name: pulumi.Output[str]
-    def __init__(self, name: str, args: StorageArgs, opts: pulumi.ResourceOptions = None): # type: ignore
+    def __init__(self, name: str, args: StorageArgs, opts: Optional[pulumi.ResourceOptions] = None): 
         super().__init__("x:index:Storage", name, {}, opts)
 
         if (opts == None):
@@ -22,7 +19,7 @@ class Storage(pulumi.ComponentResource):
 
         account = storage.StorageAccount(
             "sa",
-            resource_group_name=args.resource_group_name,
+            resource_group_name=args.get("resource_group_name"),
             sku={
                 "name": storage.SkuName.STANDARD_LRS,
             },
@@ -31,15 +28,15 @@ class Storage(pulumi.ComponentResource):
         )
 
         blob_container = storage.BlobContainer(
-            "blob",
+            f"{name}-blobcontainer",
             account_name=account.name,
-            resource_group_name=args.resource_group_name,
+            resource_group_name=args.get("resource_group_name"),
             opts=opts
         )
 
         # Export the primary key of the Storage Account
         primary_key = (
-            pulumi.Output.all(args.resource_group_name, account.name)
+            pulumi.Output.all(args.get("resource_group_name"), account.name)
             .apply(
                 lambda args: storage.list_storage_account_keys(
                     resource_group_name=args[0], account_name=args[1]
