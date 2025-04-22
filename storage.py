@@ -12,7 +12,7 @@ class Storage(pulumi.ComponentResource):
     storage_account_primary_key: pulumi.Output[str]
     blob_container_name: pulumi.Output[str]
     storage_account_name: pulumi.Output[str]
-    def __init__(self, name: str, args: StorageArgs, opts: pulumi.ResourceOptions = None}): # type: ignore
+    def __init__(self, name: str, args: StorageArgs, opts: pulumi.ResourceOptions = None): # type: ignore
         super().__init__("x:index:Storage", name, {}, opts)
 
         if (opts == None):
