@@ -35,17 +35,17 @@ class Storage(pulumi.ComponentResource):
         """
         Creates a new Storage resource.
 
-        Args:
+        Arguments:
             name (str): The unique name of the storage resource.
             args (StorageArgs): Arguments required to configure the storage resource, such as resource group name.
             opts (Optional[pulumi.ResourceOptions], optional): Resource options for the Pulumi resource. Defaults to None.
 
-        Attributes:
+        Outputs:
             blob_container_name (pulumi.Output): The name of the created blob container.
             storage_account_name (pulumi.Output): The name of the created storage account.
             storage_account_primary_key (pulumi.Output): The primary key of the created storage account.
 
-        This constructor creates an Azure Storage Account and a Blob Container within it, and exports the primary key for the storage account.
+        :param pulumi.Input[str] resource_group_name: Name of resource group that the resources are part of
         """
         super().__init__("x:index:Storage", name, {}, opts)
 
