@@ -21,10 +21,19 @@ class Storage(pulumi.ComponentResource):
         storage_account_primary_key (pulumi.Output[str]): The primary key of the created storage account.
 
     Example:
+
+    ```python
         storage = Storage(
             "my-storage",
             StorageArgs(resource_group_name="my-resource-group")
         )
+    ```
+
+    ```typescript
+        const storage = new Storage("my-storage", {
+            resourceGroupName: "my-resource-group",
+        });
+    ```    
     This component creates an Azure Storage Account and a Blob Container, and exports the primary key for the storage account.
     """
     blob_container_name: pulumi.Output[str]
